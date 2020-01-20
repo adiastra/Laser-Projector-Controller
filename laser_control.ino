@@ -49,6 +49,7 @@ digitalWrite(interlockOut, HIGH);
          // Close the shutter
          digitalWrite(shutterPin, HIGH);// set shutter pin to HIGH
          Serial.println("Shutter Closed - Interlock Fault  ");
+         delay(3000);
          
          
     }
