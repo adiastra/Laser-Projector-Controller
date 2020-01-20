@@ -1,4 +1,4 @@
-#define VERSION "Version 1.1"
+#define VERSION "Version 1.2"
  /*
 * This is the DiAstra Laser Coltrol
 * It is designed to control safety and sensors for a laser projector
