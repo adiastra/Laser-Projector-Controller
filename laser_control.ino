@@ -2,7 +2,7 @@
  /*
 * This is the DiAstra Laser Coltrol
 * It is designed to control safety and sensors for a laser projector
-* The shutter is a relay which is closed (cutting power to the lasters)
+* The shutter is a relay which is closed (cutting power to the lasers)
 * unless the interlock circuit is complete (unbroken)
 * and the shutter signal from the software/DAC is set to HIGH (+5v)
 * if either of these conditions is false the shutter remains closed
