@@ -1,4 +1,4 @@
-#define VERSION "Version 1.2"
+#define VERSION "Version 1.3"
  /*
 * This is the DiAstra Laser Coltrol
 * It is designed to control safety and sensors for a laser projector
@@ -96,7 +96,14 @@ digitalWrite(interlockOut, HIGH);
           delayTime = millis();
           Serial.println("Ready");
           boot = false; 
-          
+        }
+
+        if (digitalRead(interlockIn) == LOW) {
+          delayTime = millis();
+        }
+
+        if (digitalRead(shutterSignal) == LOW){
+          delayTime = millis();
         }
 
         if (laserOn == true){
