@@ -18,8 +18,9 @@
 
 
 unsigned long delayTime;
+bool          boot = true;
 bool          shutterMessage= false;
-bool          laserOn       = false;
+bool          laserOn       = true;
 int           shutterSignal = 13;//for reading the shutter signal
 int           shutterPin    = 12;//control relay for shutter
 int           interlockIn   = 5; //interlock Return
@@ -66,7 +67,7 @@ digitalWrite(interlockOut, HIGH);
         else if(digitalRead(interlockIn) == LOW)  {
             // Close the shutter
             digitalWrite(shutterPin, !RELAY_SIGNAL);// set shutter pin to HIGH
-            Serial.println("Shutter Closed - Interlock Fault  ");
+            Serial.println("Shutter Closed - Interlock Fault");
             shutterMessage = false;
             delayTime = millis();               
         }
@@ -84,12 +85,18 @@ digitalWrite(interlockOut, HIGH);
    else {
         //Close the shutter
         digitalWrite(shutterPin, HIGH);
-        if(digitalRead(interlockIn) == LOW)  {
-           delayTime = millis(); 
+        
+        if ((digitalRead(interlockIn) == LOW) && (boot == true))  {
+           delayTime = millis();
+           Serial.println("Shutter Closed - Interlock Fault");
+           boot = false;         
         }
 
-        if (digitalRead(shutterSignal) == LOW){
+        if ((digitalRead(shutterSignal) == LOW) && (boot == true)){
           delayTime = millis();
+          Serial.println("Ready");
+          boot = false; 
+          
         }
 
         if (laserOn == true){
