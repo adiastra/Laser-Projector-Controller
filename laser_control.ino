@@ -57,7 +57,7 @@ digitalWrite(interlockOut, HIGH);
             digitalWrite(shutterPin, RELAY_SIGNAL);
             laserOn = true;
             if (!shutterMessage) {
-              Serial.println("Shutter Open");
+              Serial.println("Shutter Open - LASER ARMED!!!!!");
               shutterMessage = true;
             }
             
@@ -84,6 +84,13 @@ digitalWrite(interlockOut, HIGH);
    else {
         //Close the shutter
         digitalWrite(shutterPin, HIGH);
+        if(digitalRead(interlockIn) == LOW)  {
+           delayTime = millis(); 
+        }
+
+        if (digitalRead(shutterSignal) == HIGH){
+          delayTime = millis();
+        }
 
         if (laserOn == true){
           Serial.println("Shutter Closed - Safety Delay");
