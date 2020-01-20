@@ -9,7 +9,7 @@
 * Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
-
+#define RELAY_SIGNAL LOW
 #define SAFETY_DELAY 5000
 #define VERSION "Version 1.0"
 
@@ -49,7 +49,7 @@ digitalWrite(interlockOut, HIGH);
         //The interlock is a circuit and the shutter is set to 'open'
         if( (digitalRead(interlockIn) == HIGH) && (digitalRead(shutterSignal) == HIGH) )  {             
             // Open the shutter
-            digitalWrite(shutterPin, LOW);
+            digitalWrite(shutterPin, RELAY_SIGNAL);
             laserOn = true;
             if (!shutterMessage) {
               Serial.println("Shutter Open");
@@ -60,7 +60,7 @@ digitalWrite(interlockOut, HIGH);
         //If interlock curcuit broken
         else if(digitalRead(interlockIn) == LOW)  {
             // Close the shutter
-            digitalWrite(shutterPin, HIGH);// set shutter pin to HIGH
+            digitalWrite(shutterPin, !RELAY_SIGNAL);// set shutter pin to HIGH
             Serial.println("Shutter Closed - Interlock Fault  ");
             shutterMessage = false;
             delayTime = millis();               
@@ -69,7 +69,7 @@ digitalWrite(interlockOut, HIGH);
         //Otherwie the shutter signal is 'closed'
         else  {     
             // Close the shutter
-            digitalWrite(shutterPin, HIGH);// set shutter pin to HIGH
+            digitalWrite(shutterPin, !RELAY_SIGNAL);// set shutter pin to HIGH
             Serial.println("Shutter Closed - No shutter signal");
             shutterMessage = false;
             delayTime = millis();
@@ -84,7 +84,9 @@ digitalWrite(interlockOut, HIGH);
           Serial.println("Shutter Closed - Safety Delay");
           laserOn = false;
                     
-        } 
+        }
+
+        
     
    }
 }
