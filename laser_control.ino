@@ -84,10 +84,7 @@ digitalWrite(interlockOut, HIGH);
           Serial.println("Shutter Closed - Safety Delay");
           laserOn = false;
                     
-        }
-        else {}
-        
-        
+        } 
     
    }
 }
