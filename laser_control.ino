@@ -1,3 +1,4 @@
+#define VERSION "Version 1.1"
  /*
 * This is the DiAstra Laser Coltrol
 * It is designed to control safety and sensors for a laser projector
@@ -15,8 +16,6 @@
 //define the safety delay in milliseconds 
 #define SAFETY_DELAY 5000
 
-//code version
-#define VERSION "Version 1.1"
 
 unsigned long delayTime;
 bool          shutterMessage= false;
