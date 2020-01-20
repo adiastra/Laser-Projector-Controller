@@ -88,7 +88,7 @@ digitalWrite(interlockOut, HIGH);
            delayTime = millis(); 
         }
 
-        if (digitalRead(shutterSignal) == HIGH){
+        if (digitalRead(shutterSignal) == LOW){
           delayTime = millis();
         }
 
