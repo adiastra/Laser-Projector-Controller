@@ -9,17 +9,23 @@
 * Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
+//Define the type of relay signal required
 #define RELAY_SIGNAL LOW
-#define SAFETY_DELAY 5000
-#define VERSION "Version 1.0"
 
+//define the safety delay in milliseconds 
+#define SAFETY_DELAY 5000
+
+//code version
+#define VERSION "Version 1.1"
+
+unsigned long delayTime;
 bool          shutterMessage= false;
 bool          laserOn       = false;
 int           shutterSignal = 13;//for reading the shutter signal
 int           shutterPin    = 12;//control relay for shutter
 int           interlockIn   = 5; //interlock Return
 int           interlockOut  = 4; //interlock Send
-unsigned long delayTime  ;
+
 
 // setup code for DiAstra laser control
 void setup() {
