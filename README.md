@@ -16,19 +16,19 @@ If laser power is interrupted there is a 5 second delay before you can turn the 
 
 The current state of the laser power is printed to serial if you want to monitor the state.
 
-For safety the GALVO power should NEVER be interrupted
+*For safety the GALVO power should NEVER be interrupted*
 
 The Arduino pins are as follows
 
-ShutterSignal = The signal coming from the ILDA shutter signal. +5v = Shutter OPEN (this is an input pin for reading the shutter voltage)
-ShutterPin = Pin used to control the relay state (Output pin for sending signal to the relay)
-InterlockOut = set to +v5 to send a constant signal over the interlock loop (+5v output pin)
-InterlockIn = Reads the signal from the interlock loop sent from the InterlockOut pin(input pin)
+- ShutterSignal = The signal coming from the ILDA shutter signal. +5v = Shutter OPEN (this is an input pin for reading the shutter voltage)
+- ShutterPin = Pin used to control the relay state (Output pin for sending signal to the relay
+- InterlockOut = set to +v5 to send a constant signal over the interlock loop (+5v output pin)
+- InterlockIn = Reads the signal from the interlock loop sent from the InterlockOut pin(input pin)
 
 
 # How to use this sketch 
 
-A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 on the DB25) is cpnnected to the shutterSignal pin of the arduino. 
+A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 on the DB25) is connected to the shutterSignal pin of the arduino. 
 
 The Arduino board should share a ground with the DB25 connector
 
