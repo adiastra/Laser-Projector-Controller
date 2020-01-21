@@ -1,4 +1,4 @@
-#define VERSION "Version 1.3"
+#define VERSION "Version 1.4"
  /*
 * This is the DiAstra Laser Controler
 * It is designed to control safety and sensors for a laser projector
