@@ -18,8 +18,10 @@
 
 
 unsigned long delayTime;
+unsigned long repeatMessage;
 bool          boot = true;
 bool          shutterMessage= false;
+bool       interlockMessage = false;
 bool          laserOn       = true;
 int           shutterSignal = 13;//for reading the shutter signal
 int           shutterPin    = 12;//control relay for shutter
@@ -82,12 +84,20 @@ digitalWrite(interlockOut, HIGH);
             shutterMessage = false;
             delayTime = millis();
         }
-   }
-   
-   else {
+
+        
+   }else{
+
+        
+        
         //Close the shutter
         digitalWrite(shutterPin, !RELAY_SIGNAL);
-
+        
+        if (millis() > repeatMessage + SAFETY_DELAY) {
+          laserOn = true;
+          interlockMessage = false;
+          
+        }
         //If the interlock circuit is broken at boot
         if ((digitalRead(interlockIn) == LOW) && (boot == true))  {
            delayTime = millis();
@@ -104,7 +114,12 @@ digitalWrite(interlockOut, HIGH);
 
         //If the interlock circuit is re-broken during the safety delay period  restart the the delay count
         if (digitalRead(interlockIn) == LOW) {
-          delayTime = millis();          
+          delayTime = millis();
+          if (!interlockMessage){
+            Serial.println("Interlock Fault");
+            interlockMessage = true;  
+            repeatMessage = delayTime;       
+          }
         }
 
         //If the shutter is re-closed durring the delay period restart the delay count
@@ -116,11 +131,10 @@ digitalWrite(interlockOut, HIGH);
         if (laserOn == true){
           Serial.println("Shutter Closed - Safety Delay");
           laserOn = false;
+          repeatMessage = delayTime;           
                     
         }
 
-        
-    
    }
 }
  
