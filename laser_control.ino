@@ -10,7 +10,7 @@
 * Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
-//Define the type of relay signal required
+//Define the type of relay signal required (used for shutterPin)
 #define RELAY_SIGNAL LOW
 
 //define the safety delay in milliseconds 
@@ -49,10 +49,11 @@ void loop()
   
 //send our interlock signal  
 digitalWrite(interlockOut, HIGH);
-    
+
+   //Has the safety delay been met? 
    if (millis() > delayTime + SAFETY_DELAY) {
 
-        //If the interlock is a circuit AMD the shutter is set to 'open'
+        //If the interlock is a circuit AND the shutter is set to 'open'
         if( (digitalRead(interlockIn) == HIGH) && (digitalRead(shutterSignal) == HIGH) )  {             
             // Open the shutter
             digitalWrite(shutterPin, RELAY_SIGNAL);
@@ -85,7 +86,7 @@ digitalWrite(interlockOut, HIGH);
    
    else {
         //Close the shutter
-        digitalWrite(shutterPin, HIGH);
+        digitalWrite(shutterPin, !RELAY_SIGNAL);
 
         //If the interlock circuit is broken at boot
         if ((digitalRead(interlockIn) == LOW) && (boot == true))  {
@@ -97,18 +98,18 @@ digitalWrite(interlockOut, HIGH);
         //If the shutter signal is off at boot (which is totally acceptabl)
         if ((digitalRead(shutterSignal) == LOW) && (boot == true)){
           delayTime = millis();
-          Serial.println("SHutter Closed - Ready");
+          Serial.println("Shutter Closed - Ready");
           boot = false; 
         }
 
         //If the interlock circuit is re-broken during the safety delay period  restart the the delay count
         if (digitalRead(interlockIn) == LOW) {
-          delayTime = millis();
+          delayTime = millis();          
         }
 
         //If the shutter is re-closed durring the delay period restart the delay count
         if (digitalRead(shutterSignal) == LOW){
-          delayTime = millis();
+          delayTime = millis();          
         }
 
         //If the last state of the laser was ON let the user know that we are in a safety delay period
