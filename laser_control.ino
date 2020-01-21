@@ -1,5 +1,5 @@
 
-#define VERSION "Version 1.4"
+#define VERSION "Version 1.5"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -56,18 +56,11 @@ void loop()
   {
     //Has SAFETY_DELAY been met?
 
-    if (millis > (repeatMessage + SAFETY_DELAY))
-    {
-      interlockMessage = false;
-      shutterMessage = false;
-    }
-
-    //If the interlock is a circuit AND the shutter is set to 'open'
+     //If the interlock is a circuit AND the shutter is set to 'open'
     if ((digitalRead(interlockIn) == HIGH) && (digitalRead(shutterSignal) == HIGH))
     {
       // Open the shutter
       digitalWrite(shutterPin, RELAY_SIGNAL);
-      laserOn = true;
       interlockMessage = false;
       shutterMessage = false;
       safetyMessage = false;
@@ -125,8 +118,6 @@ void loop()
       Serial.println("Shutter Closed - Safety Delay");
       safetyMessage = true;
       repeatMessage = delayTime;
-      interlockMessage = false;
-      shutterMessage = false;
       laserMessage = false;
     }
 
