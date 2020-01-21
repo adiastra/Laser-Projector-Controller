@@ -60,6 +60,7 @@ digitalWrite(interlockOut, HIGH);
             if (!shutterMessage) {
               Serial.println("Shutter Open - LASER ARMED!!!!!");
               shutterMessage = true;
+              boot = false;
             }
             
         }
