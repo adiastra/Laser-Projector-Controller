@@ -27,10 +27,13 @@ The Arduino pins are as follows
 
 
 # How to use this sketch 
+**flash laser_control.ino to the arduino board**
 
 A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 on the DB25) is connected to the shutterSignal pin of the arduino. 
 
 The Arduino board should share a ground with the DB25 connector
+
+
 
 The interlockOut pin should connect to pin 4 of ILDA DB25 and the interlockIn pin should connect to pin 17 of the ILDA DB2. This is how the Arduino detects if there is a closed circuit. A 10k resistor can be used on these pins connected to ground to aleviate any float foltage when the circuit is broken. 
 
