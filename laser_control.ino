@@ -86,7 +86,7 @@ void loop()
     digitalWrite(shutterPin, !RELAY_SIGNAL);
 
     //reset the delay timer if either condition changes
-    if ((digitalRead(shutterSignal) == LOW) or(digitalRead(interlockIn) == LOW))
+    if ((digitalRead(shutterSignal) == LOW) || (digitalRead(interlockIn) == LOW))
     {
       delayTime = millis();
     }
@@ -124,7 +124,7 @@ void loop()
     if (boot)
     {
       Serial.println("Boot Delay");
-      delay(5000);
+      delay(SAFETY_DELAY);
       boot = false;
     }
 
