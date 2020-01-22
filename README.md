@@ -33,3 +33,7 @@ A circuit should be configured so that the ILDA Shutter pin from the connector (
 The Arduino board should share a ground with the DB25 connector
 
 The interlockOut pin should connect to pin 4 of ILDA DB25 and the interlockIn pin should connect to pin 17 of the ILDA DB2. This is how the Arduino detects if there is a closed circuit. A 10k resistor can be used on these pins connected to ground to aleviate any float foltage when the circuit is broken. 
+
+The delay times for eacg delay type are configurable at the top of the sketch. note that SHUTTER_DELAY should be the shortest, followed by INTERLOCK_DELAY and BOOT_DELAY should be the longest (all in milliseconds). 
+
+MESSAGE_DELAY can be whatever you want as it only controls how often messages repeat in the serial readout. 
