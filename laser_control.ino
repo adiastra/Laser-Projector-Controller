@@ -97,10 +97,10 @@ void loop()
     // If shutter is closed
     if (digitalRead(shutterSignal) == LOW)
     {
-      if (!shutterMessage)
-      {
       delayType = SHUTTER_DELAY;
-      delayTime = millis();        
+      delayTime = millis();  
+      if (!shutterMessage)
+      {      
         Serial.println("Shutter Closed - No Shutter Signal");
         shutterMessage = true;
         repeatMessage = millis();
