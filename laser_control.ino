@@ -1,5 +1,5 @@
 
-#define VERSION "Version 1.5"
+#define VERSION "Version 1.6"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -14,8 +14,13 @@
 //Define the type of relay signal required (used for shutterPin)
 #define RELAY_SIGNAL LOW
 
-//define the safety delay in milliseconds 
-#define SAFETY_DELAY 5000
+//define the safety delay in milliseconds
+//BOOT should be the longest then INTERLOCK with SHUTTER beinf the shortest
+//MESSGE can be whatever you want 
+#define SHUTTER_DELAY 5000 
+#define INTERLOCK_DELAY 10000
+#define BOOT_DELAY 20000
+#define MESSAGE_DELAY 5000
 
 unsigned long delayTime;
 unsigned long repeatMessage;
@@ -28,6 +33,7 @@ int shutterSignal = 13;  //for reading the shutter signal
 int shutterPin = 12;  //control relay for shutter
 int interlockIn = 5;  //interlock Return
 int interlockOut = 4; //interlock Send
+int delayType;
 
 // setup code for DiAstra laser control
 void setup()
@@ -52,7 +58,7 @@ void loop()
   //send our interlock signal  
   digitalWrite(interlockOut, HIGH);
 
-  if (millis() > (delayTime + SAFETY_DELAY))
+  if (millis() > (delayTime + delayType))
   {
     //Has SAFETY_DELAY been met?
 
@@ -85,11 +91,19 @@ void loop()
     //keep the shutter closed
     digitalWrite(shutterPin, !RELAY_SIGNAL);
 
-    //reset the delay timer if either condition changes
-    if ((digitalRead(shutterSignal) == LOW) || (digitalRead(interlockIn) == LOW))
+    //reset the delay timer if the shutter is still open
+    if (digitalRead(shutterSignal) == LOW)  
     {
+      delayType = SHUTTER_DELAY;
       delayTime = millis();
     }
+
+    //rest the delay time if the interlock is still broken
+    if (digitalRead(interlockIn) == LOW)
+     {
+      delayType = INTERLOCK_DELAY;
+      delayTime = millis();
+     }
 
     //If interlock curcuit broken
     if (digitalRead(interlockIn) == LOW)
@@ -124,11 +138,11 @@ void loop()
     if (boot)
     {
       Serial.println("Boot Delay");
-      delay(SAFETY_DELAY);
+      delay(BOOT_DELAY);
       boot = false;
     }
 
-    if (millis() > (repeatMessage + SAFETY_DELAY))
+    if (millis() > (repeatMessage + MESSAGE_DELAY))
     {
       shutterMessage = false;
       interlockMessage = false;
