@@ -16,10 +16,11 @@
 
 //define the safety delay in milliseconds
 //BOOT should be the longest then INTERLOCK with SHUTTER beinf the shortest
-//MESSGE can be whatever you want 
 #define SHUTTER_DELAY 5000 
 #define INTERLOCK_DELAY 10000
 #define BOOT_DELAY 20000
+
+//How long before messages repeat.
 #define MESSAGE_DELAY 5000
 
 unsigned long delayTime;
@@ -91,38 +92,28 @@ void loop()
     //keep the shutter closed
     digitalWrite(shutterPin, !RELAY_SIGNAL);
 
-    //reset the delay timer if the shutter is still open
-    if (digitalRead(shutterSignal) == LOW)  
-    {
-      delayType = SHUTTER_DELAY;
-      delayTime = millis();
-    }
-
-    //rest the delay time if the interlock is still broken
-    if (digitalRead(interlockIn) == LOW)
-     {
-      delayType = INTERLOCK_DELAY;
-      delayTime = millis();
-     }
-
-    //If interlock curcuit broken
-    if (digitalRead(interlockIn) == LOW)
-    {
-      if (!interlockMessage)
-      {
-        Serial.println("Shutter Closed - Interlock Fault");
-        interlockMessage = true;
-        repeatMessage = millis();
-      }
-    }
-
-    // If shitter is closed
+    // If shutter is closed
     if (digitalRead(shutterSignal) == LOW)
     {
       if (!shutterMessage)
       {
+      delayType = SHUTTER_DELAY;
+      delayTime = millis();        
         Serial.println("Shutter Closed - No Shutter Signal");
         shutterMessage = true;
+        repeatMessage = millis();
+      }
+    }
+
+    //If interlock curcuit broken
+    if (digitalRead(interlockIn) == LOW)
+    {
+      delayType = INTERLOCK_DELAY;
+      delayTime = millis();      
+      if (!interlockMessage)
+      {
+        Serial.println("Shutter Closed - Interlock Fault");
+        interlockMessage = true;
         repeatMessage = millis();
       }
     }
@@ -138,7 +129,7 @@ void loop()
     if (boot)
     {
       Serial.println("Boot Delay");
-      delay(BOOT_DELAY);
+      delayType = BOOT_DELAY;
       boot = false;
     }
 
