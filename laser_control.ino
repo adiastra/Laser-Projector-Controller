@@ -15,7 +15,7 @@
 #define RELAY_SIGNAL LOW
 
 //define the safety delay in milliseconds
-//BOOT should be the longest then INTERLOCK with SHUTTER beinf the shortest
+//BOOT should be the longest then INTERLOCK with SHUTTER being the shortest
 #define SHUTTER_DELAY 5000 
 #define INTERLOCK_DELAY 10000
 #define BOOT_DELAY 20000
@@ -56,12 +56,14 @@ void setup()
 // loop code DiAstra Laser Controller
 void loop()
 {
+
   //send our interlock signal  
   digitalWrite(interlockOut, HIGH);
-
+  
+  //Has SAFETY_DELAY been met?
   if (millis() > (delayTime + delayType))
   {
-    //Has SAFETY_DELAY been met?
+    
 
      //If the interlock is a circuit AND the shutter is set to 'open'
     if ((digitalRead(interlockIn) == HIGH) && (digitalRead(shutterSignal) == HIGH))
