@@ -29,7 +29,7 @@ The Arduino pins are as follows
 # How to use this sketch 
 **flash laser_control.ino to the arduino board**
 
-A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 on the DB25) is connected to the shutterSignal pin of the arduino. 
+A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 on the DB25) is connected to the shutterSignal pin of the arduino. The shutterPin pin should go to your relay signal pin. The relay and the Arduino both need 5v and can share the same power supply. Any loss of power to the arduino or relay will cause the shutter to close. 
 
 The Arduino board should share a ground with the DB25 connector
 
