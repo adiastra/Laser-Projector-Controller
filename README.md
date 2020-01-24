@@ -35,7 +35,7 @@ Information on getting started with Arduino can be found here (it's easy!)
 https://www.arduino.cc/en/Guide/HomePage
 
 
-**The shuttert**
+**The shutter**
 
 A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 from the ILDA DB25) is connected to the shutterSignal pin of the arduino. The shutterPin pin should go to your relay signal pin. the ILDA ground pin (ILDA DB25 pin 25)should be connected to a common ground. 
 
@@ -54,6 +54,10 @@ You can use the interlock in a number of ways.
 
 The delay times for each delay type are configurable at the top of the sketch. note that SHUTTER_DELAY should be the shortest, followed by INTERLOCK_DELAY and BOOT_DELAY should be the longest (all in milliseconds). 
 
-If your show controler closes the shutter during the show (for blank periods) you will need to set the SHUTTER_DELAY based on your controllers specs. If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver you. Instead use an alternate method for controling the shutter (manual shutter, ground modulation signal). 
+**Different controllers and shutter methods**
+
+If your show controler closes the shutter during the show (for blank periods) you will need to set the SHUTTER_DELAY based on your controllers specs. 
+
+If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver you. Instead use an alternate method for controling the shutter (manual shutter, ground modulation signal). 
 
 MESSAGE_DELAY can be whatever you want as it only controls how often messages repeat in the serial readout. 
