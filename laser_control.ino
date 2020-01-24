@@ -1,5 +1,5 @@
 
-#define VERSION "Version 1.6"
+#define VERSION "Version 1.7"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -29,12 +29,15 @@ bool boot = true;
 bool laserMessage = false;
 bool shutterMessage = false;
 bool interlockMessage = false;
-bool safetyMessage = true;
+bool shutterReady = false;
+bool interlock = LOW; 
+bool shutter = LOW; 
+//Pins can be any digital pins
 int shutterSignal = 13;  //for reading the shutter signal
 int shutterPin = 12;  //control relay for shutter
 int interlockIn = 5;  //interlock Return
 int interlockOut = 4; //interlock Send
-int delayType;
+
 
 // setup code for DiAstra laser control
 void setup()
@@ -49,96 +52,100 @@ void setup()
   pinMode(interlockIn, INPUT);
   pinMode(interlockOut, OUTPUT);
   pinMode(shutterSignal, INPUT);
-  delayTime = millis();
+  
+  //Startup delay
+  if (boot)
+  {
+    digitalWrite(shutterPin, !RELAY_SIGNAL);
+    Serial.println("BOOT DELAY");
+    delay(BOOT_DELAY);
+    boot = false;
+    Serial.println("BOOT COMPLETE");
+  }
+  
 
-}
+}//END SETUP
 
 // loop code DiAstra Laser Controller
 void loop()
 {
-
-  //send our interlock signal  
+  //always send interlock signal  
   digitalWrite(interlockOut, HIGH);
-  
-  //Has SAFETY_DELAY been met?
-  if (millis() > (delayTime + delayType))
-  {
-    
+  checkPins();
 
-     //If the interlock is a circuit AND the shutter is set to 'open'
-    if ((digitalRead(interlockIn) == HIGH) && (digitalRead(shutterSignal) == HIGH))
+  if (millis() >= delayTime + INTERLOCK_DELAY)
+  {
+    while((shutter) && (interlock))
     {
-      // Open the shutter
       digitalWrite(shutterPin, RELAY_SIGNAL);
-      interlockMessage = false;
+      checkPins();
       shutterMessage = false;
-      safetyMessage = false;
+      interlockMessage = false;
+      shutterReady = false;
       if (!laserMessage)
       {
-        Serial.println("Shutter Open - LASER ARMED!!!!!");
-        laserMessage = true;
-      }
-    }
-    else
-    {
-      //else turn of the laser
-      digitalWrite(shutterPin, !RELAY_SIGNAL);
-      delayTime = millis();
-      laserMessage = false;
+        Serial.println("Shutter Open - !!! LASER ON !!!");
+        laserMessage = true;    }
     }
   }
-  else
+  
+  if (!shutter)
   {
-    //SAFETY_DELAY has not been met
-
-    //keep the shutter closed
     digitalWrite(shutterPin, !RELAY_SIGNAL);
-
-    // If shutter is closed
-    if (digitalRead(shutterSignal) == LOW)
+    laserMessage = false;
+    if (!shutterMessage)
     {
-      delayType = SHUTTER_DELAY;
-      delayTime = millis();  
-      if (!shutterMessage)
-      {      
-        Serial.println("Shutter Closed - No Shutter Signal");
-        shutterMessage = true;
-        repeatMessage = millis();
-      }
-    }
-
-    //If interlock curcuit broken
-    if (digitalRead(interlockIn) == LOW)
-    {
-      delayType = INTERLOCK_DELAY;
-      delayTime = millis();      
-      if (!interlockMessage)
+      if (!shutterReady)
       {
-        Serial.println("Shutter Closed - Interlock Fault");
-        interlockMessage = true;
-        repeatMessage = millis();
+        Serial.println("Shutter Closed - Safety Delay");
+        delay(SHUTTER_DELAY);
+        shutterReady = true;
       }
-    }
-
-    if (!safetyMessage)
-    {
-      Serial.println("Shutter Closed - Safety Delay");
-      safetyMessage = true;
-      repeatMessage = delayTime;
-      laserMessage = false;
-    }
-
-    if (boot)
-    {
-      Serial.println("Boot Delay");
-      delayType = BOOT_DELAY;
-      boot = false;
-    }
-
-    if (millis() > (repeatMessage + MESSAGE_DELAY))
-    {
-      shutterMessage = false;
-      interlockMessage = false;
+      else
+      {
+        Serial.println("Shutter Closed - Laser Ready");
+        shutterMessage = true;  
+        repeatMessage = millis();    
+      }
     }
   }
+
+  if (!interlock)
+  {
+    digitalWrite(shutterPin, !RELAY_SIGNAL);    
+    laserMessage = false;
+    delayTime = millis();
+    if (!interlockMessage)
+    {
+      Serial.println("!!! INTERLOCK FAULT !!!");
+      interlockMessage = true;
+      repeatMessage = millis();
+      
+    }    
+  }
+
+  if (millis() >= repeatMessage + MESSAGE_DELAY)
+  {
+    shutterMessage = false;
+    interlockMessage = false;
+  }
+}  // END LOOP
+  
+  
+
+
+
+//Function for checking the state of the sensing pins
+void checkPins()
+{
+ if (interlock)
+ {
+  shutter = digitalRead(shutterSignal);
+ }
+ else
+ {
+  shutterReady = false;  
+ } 
+ 
+ interlock = digitalRead(interlockIn);
 }
