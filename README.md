@@ -48,6 +48,6 @@ You can use the interlock in a number of ways.
 
 The delay times for each delay type are configurable at the top of the sketch. note that SHUTTER_DELAY should be the shortest, followed by INTERLOCK_DELAY and BOOT_DELAY should be the longest (all in milliseconds). 
 
-If your show controler closes the shutter during the show (for blank periods) you will need to set the SHUTTER_DELAY based on your controllers specs. If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver. 
+If your show controler closes the shutter during the show (for blank periods) you will need to set the SHUTTER_DELAY based on your controllers specs. If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver you. Instead use an alternate method for controling the shutter (manual shutter, ground modulation signal). 
 
 MESSAGE_DELAY can be whatever you want as it only controls how often messages repeat in the serial readout. 
