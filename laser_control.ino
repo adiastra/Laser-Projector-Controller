@@ -123,7 +123,7 @@ void loop()
   }
 
   if (!interlock)
-  {//If the interlock signal is missing close the shutter for SHUTTER_DELAY until the signal is back 
+  {//If the interlock signal is missing close the shutter for INTERLOCK_DELAY until the signal is back 
     digitalWrite(shutterPin, !RELAY_SIGNAL);    
     laserMessage = false;
     delayTime = millis();
