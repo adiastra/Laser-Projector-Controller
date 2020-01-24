@@ -37,7 +37,7 @@ The Arduino board should share a ground with the DB25 connector
 
 **The interlock circuit**
 
-The interlockOut pin should connect to pin 4 of ILDA DB25 and the interlockIn pin should connect to pin 17 of the ILDA DB25. This is how the Arduino detects if there is a closed circuit. A 10k resistor can be used on these pins connected to ground to aleviate any float voltage when the circuit is broken. 
+The interlockOut pin should connect to pin 4 of ILDA DB25 and the interlockIn pin should connect to pin 17 of the ILDA DB25. This is how the Arduino detects if there is a closed circuit. A 10k resistor should be connected from the interlockIn pin to ground to aleviate any float voltage when the circuit is broken. 
 
 You can use the interlock in a number of ways. 
 - enclosure sensors
