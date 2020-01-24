@@ -8,13 +8,15 @@ This is code for an Arduino microcontroller designed to read the current state o
 
 The code does the following.
 
-IF the SHUTTER signal is OPEN (+5v) AND the INTERLOCK is a COMPLETE CIRCUIT, only then will a relay close providing power to the laser(s). (after a 5 second delay)
+IF the SHUTTER signal is OPEN (+5v) AND the INTERLOCK is a COMPLETE CIRCUIT, only then will a relay close providing power to the laser(s). 
 
 If at any point either of these states changes (shutter closes or interlock is broken) the relay immediately opens (its default un-powered state) and the lasers power is interrupted.
 
-If laser power is interrupted there is a 5 second delay before you can turn the power to the lasers back on and the interlock and shutter have to be in the proper states or they will remain off.
+If "shutter" is closed there is a delay before you can turn the power to the lasers back on and the interlock and shutter have to be in the proper states or they will remain off.
 
-The current state of the laser power is printed to serial if you want to monitor the state.
+If the interlock fails, the :shutter: is closed and remains closed until the interlock issue has been reolved and a safety delay has expired.
+
+Information is printed to serial regarding the state of the system.
 
 *For safety the GALVO power should NEVER be interrupted*
 
@@ -46,6 +48,6 @@ You can use the interlock in a number of ways.
 
 The delay times for each delay type are configurable at the top of the sketch. note that SHUTTER_DELAY should be the shortest, followed by INTERLOCK_DELAY and BOOT_DELAY should be the longest (all in milliseconds). 
 
-If your show controler closes the shutter during 
+If your show controler closes the shutter during the show (for blank periods) you will need to set the SHUTTER_DELAY based on your controllers specs. If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver. 
 
 MESSAGE_DELAY can be whatever you want as it only controls how often messages repeat in the serial readout. 
