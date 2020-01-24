@@ -30,6 +30,7 @@ The Arduino pins are as follows
 
 # How to use this sketch 
 **flash laser_control.ino to the arduino board**
+
 Information on getting started with Arduino can be found here (it's easy!)
 https://www.arduino.cc/en/Guide/HomePage
 
