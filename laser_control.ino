@@ -1,5 +1,5 @@
 
-#define VERSION "Version 1.7"
+#define VERSION "Version 2.0"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -23,6 +23,8 @@
 //How long before messages repeat.
 #define MESSAGE_DELAY 5000
 
+
+//Required variables
 unsigned long delayTime;
 unsigned long repeatMessage;
 bool boot = true;
@@ -32,6 +34,7 @@ bool interlockMessage = false;
 bool shutterReady = false;
 bool interlock = LOW; 
 bool shutter = LOW; 
+
 //Pins can be any digital pins
 int shutterSignal = 13;  //for reading the shutter signal
 int shutterPin = 12;  //control relay for shutter
@@ -53,9 +56,10 @@ void setup()
   pinMode(interlockOut, OUTPUT);
   pinMode(shutterSignal, INPUT);
   
-  //Startup delay
+  //Startup delay during setup (BOOT_DELAY)
   if (boot)
   {
+    //make sure the shutter is closed and pause
     digitalWrite(shutterPin, !RELAY_SIGNAL);
     Serial.println("BOOT DELAY");
     delay(BOOT_DELAY);
@@ -69,16 +73,21 @@ void setup()
 // loop code DiAstra Laser Controller
 void loop()
 {
-  //always send interlock signal  
+  //always send interlock signal so we can test for it 
   digitalWrite(interlockOut, HIGH);
   checkPins();
 
+  //are we in a delay caused by an interlock fault?
   if (millis() >= delayTime + INTERLOCK_DELAY)
   {
+    // If the interlock is good and the shutter is set to open  
     while((shutter) && (interlock))
     {
+      //open the shutter
       digitalWrite(shutterPin, RELAY_SIGNAL);
+      //constantly check shutetr and interlock state
       checkPins();
+      //reset messages
       shutterMessage = false;
       interlockMessage = false;
       shutterReady = false;
@@ -89,20 +98,22 @@ void loop()
     }
   }
   
+  // if the shutter signal is set to closed (by the DAC or the user)
   if (!shutter)
   {
+    //Close the shutter
     digitalWrite(shutterPin, !RELAY_SIGNAL);
     laserMessage = false;
     if (!shutterMessage)
-    {
+    {      
       if (!shutterReady)
-      {
+      {//Safety delay on shutter close so we cant reopen to quickly accidently (SHUTTER_DELAY)
         Serial.println("Shutter Closed - Safety Delay");
         delay(SHUTTER_DELAY);
         shutterReady = true;
-      }
+      }     
       else
-      {
+      { //If the safety delay has happened already the shutter is ready to open
         Serial.println("Shutter Closed - Laser Ready");
         shutterMessage = true;  
         repeatMessage = millis();    
@@ -111,7 +122,7 @@ void loop()
   }
 
   if (!interlock)
-  {
+  {//If the interlock signal is missing close the shutter for SHUTTER_DELAY until the signal is back 
     digitalWrite(shutterPin, !RELAY_SIGNAL);    
     laserMessage = false;
     delayTime = millis();
@@ -124,6 +135,7 @@ void loop()
     }    
   }
 
+  // this alows us to repeat messages to serial every MESSAGE_DELAY seconds
   if (millis() >= repeatMessage + MESSAGE_DELAY)
   {
     shutterMessage = false;
