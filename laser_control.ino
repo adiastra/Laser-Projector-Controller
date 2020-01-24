@@ -1,5 +1,5 @@
 
-#define VERSION "Version 2.0"
+#define VERSION "Version 2.1"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -62,12 +62,11 @@ void setup()
   {
     //make sure the shutter is closed and pause
     digitalWrite(shutterPin, !RELAY_SIGNAL);
-    Serial.println("BOOT DELAY");
+    Serial.println("BOOT DELAY shhhhh...  {zzz}°°°( -_-)");
     delay(BOOT_DELAY);
     boot = false;
-    Serial.println("BOOT COMPLETE");
-  }
-  
+    Serial.println("BOOT COMPLETE \\(°o°)/");
+  }  
 
 }//END SETUP
 
@@ -113,8 +112,8 @@ void loop()
         delay(SHUTTER_DELAY);
         shutterReady = true;
       }     
-      else
-      { //If the safety delay has happened already the shutter is ready to open
+      else if (interlock)
+      { //If the safety delay has happened already, and the interlock is good, the shutter is ready to open
         Serial.println("Shutter Closed - Laser Ready");
         shutterMessage = true;  
         repeatMessage = millis();    
@@ -142,9 +141,7 @@ void loop()
     shutterMessage = false;
     interlockMessage = false;
   }
-}  // END LOOP
-  
-  
+}  // END LOOP  
 
 
 
@@ -157,8 +154,7 @@ void checkPins()
  }
  else
  {
-  shutterReady = false;  
- } 
- 
+  shutter = false; 
+ }
  interlock = digitalRead(interlockIn);
 }
