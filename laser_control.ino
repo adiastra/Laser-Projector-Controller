@@ -7,7 +7,8 @@
  *unless the interlock circuit is complete (unbroken)
  *and the shutter signal from the software/DAC is set to HIGH (+5v)
  *if either of these conditions is false the shutter remains closed
- *there is a 5 second delay after closing the shutter before you can open it again
+ *there is a delay after closing the shutter before you can open it again
+ *There is a delay after an interlock fault has been resolved also
  *Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
