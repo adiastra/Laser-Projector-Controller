@@ -66,8 +66,8 @@ void setup()
     delay(BOOT_DELAY);
     boot = false;
     Serial.println("BOOT COMPLETE \\(°o°)/");
-  }  
-
+  }
+  
 }//END SETUP
 
 // loop code DiAstra Laser Controller
@@ -106,7 +106,7 @@ void loop()
     laserMessage = false;
     if (!shutterMessage)
     {      
-      if (!shutterReady)
+      if ((!shutterReady) && (interlock))
       {//Safety delay on shutter close so we cant reopen to quickly accidently (SHUTTER_DELAY)
         Serial.println("Shutter Closed - Safety Delay");
         delay(SHUTTER_DELAY);
@@ -141,7 +141,9 @@ void loop()
     shutterMessage = false;
     interlockMessage = false;
   }
-}  // END LOOP  
+}  // END LOOP
+  
+  
 
 
 
