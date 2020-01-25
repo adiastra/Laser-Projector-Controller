@@ -7,6 +7,8 @@ Onboard control for a laser projector
 **SAFETY DISCLAIMER** YOU are responsable for the safety of your projector. The code provided is designed to make adding a safety curcuit to your system easier. YOU must choose how you want to disable your lasers in an emergency stop situation. YOU must have a protocol in place in these situatations. NEVER leave an active laser projector unattended. 
 
 
+**Purpose**
+
 This is code for an Arduino microcontroller designed to read the current state of the SHUTTER and INTERLOCK from a standard ILDA connector.
 
 The code does the following.
