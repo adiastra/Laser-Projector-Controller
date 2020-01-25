@@ -65,7 +65,7 @@ void setup()
     digitalWrite(shutterPin, !RELAY_SIGNAL);
     Serial.println("BOOT DELAY shhhhh...  {zzz}°°°( -_-)");
     delay(BOOT_DELAY);
-    boot = false;
+    boot = false; 
     Serial.println("BOOT COMPLETE \\(°o°)/");
   }
   
@@ -149,10 +149,6 @@ void loop()
   // this alows us to repeat messages to serial every MESSAGE_DELAY seconds
   if (millis() >= repeatMessage + MESSAGE_DELAY)
   {
-    if (!interlock)
-    {
-      shutterReady = false;
-    }
     shutterMessage = false;
     interlockMessage = false;
   }
