@@ -2,6 +2,8 @@
 Onboard control for a laser projector
 
 **DISCLAIMER:** This is not for controlling the laser modulation or galvos! 
+
+
 **SAFETY DISCLAIMER** YOUR are responsable for the safety of your projector. The code provided is designed to make adding a safety curcuit to your system easier. YOU must choose how you want to disable your lasers in an emergency stop situation. YOU must have a protocol in place in these situatations. NEVER leave an active laser projector unattended. 
 
 
