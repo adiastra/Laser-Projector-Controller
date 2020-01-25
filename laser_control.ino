@@ -3,7 +3,7 @@
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
- *The ILDA shutter is a relay which is closed (cutting power to the lasers)
+ *The ILDA shutter is a closed which is closed (cutting power to the lasers)
  *unless the interlock circuit is complete (unbroken)
  *and the shutter signal from the software/DAC is set to HIGH (+5v)
  *if either of these conditions is false the shutter remains closed
@@ -12,8 +12,8 @@
  *Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
-//Define the type of relay signal required (used for shutterPin)
-#define RELAY_SIGNAL LOW
+//Define the type of signal required (used for shutterPin)
+#define ACTIVATE LOW
 
 //define the safety delay in milliseconds
 //BOOT should be the longest then INTERLOCK with SHUTTER being the shortest
@@ -39,7 +39,7 @@ bool shutter = LOW;
 
 //Pins can be any digital pins
 int shutterSignal = 13;  //for reading the shutter signal
-int shutterPin = 12;  //control relay for shutter
+int shutterPin = 12;  //control switch for shutter
 int interlockIn = 5;  //interlock Return
 int interlockOut = 4; //interlock Send
 
@@ -62,7 +62,7 @@ void setup()
   if (boot)
   {
     //make sure the shutter is closed and pause
-    digitalWrite(shutterPin, !RELAY_SIGNAL);
+    digitalWrite(shutterPin, !ACTIVATE);
     Serial.println("BOOT DELAY shhhhh...  {zzz}°°°( -_-)");
     delay(BOOT_DELAY);
     boot = false; 
@@ -85,7 +85,7 @@ void loop()
     while((shutter) && (interlock))
     {
       //open the shutter
-      digitalWrite(shutterPin, RELAY_SIGNAL);
+      digitalWrite(shutterPin, ACTIVATE);
       //constantly check shutetr and interlock state
       checkPins();
       //reset messages
@@ -103,7 +103,7 @@ void loop()
   if (!shutter)
   {
     //Close the shutter
-    digitalWrite(shutterPin, !RELAY_SIGNAL);
+    digitalWrite(shutterPin, !ACTIVATE);
     laserMessage = false;
     if (!shutterMessage)
     {      
@@ -124,7 +124,7 @@ void loop()
 
   if (!interlock)
   {//If the interlock signal is missing close the shutter for INTERLOCK_DELAY until the signal is back 
-    digitalWrite(shutterPin, !RELAY_SIGNAL);    
+    digitalWrite(shutterPin, !ACTIVATE);    
     laserMessage = false;
     delayTime = millis();
     if (!interlockMessage)
