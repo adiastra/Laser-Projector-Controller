@@ -3,7 +3,7 @@
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
- *The ILDA shutter is a switch which is closed (cutting power to the lasers)
+ *The ILDA shutter is a switch which is closed (disabling the lasers in some way)
  *unless the interlock circuit is complete (unbroken)
  *and the shutter signal from the software/DAC is set to HIGH (+5v)
  *if either of these conditions is false the shutter remains closed
@@ -12,7 +12,7 @@
  *Written by: Alec DiAstra (alecdiastra@gmail.com)
  */
 
-//Define the type of signal required (used for shutterPin)
+//Define the type of signal required to activate the switch(used for shutterPin)
 #define ACTIVATE LOW
 
 //define the safety delay in milliseconds
