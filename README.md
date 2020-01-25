@@ -10,7 +10,7 @@ The code does the following.
 
 IF the SHUTTER signal is OPEN (+5v) AND the INTERLOCK is a COMPLETE CIRCUIT, only then will aa pin activate that can be used to control whatever shutter method you have chosen (relay on DC power, crobar circuit, grounding modulation) to deactivate your lasers. 
 
-If at any point either of these states changes (shutter closes or interlock is broken) the relay immediately opens (its default un-powered state) and the lasers power is interrupted.
+If at any point either of these states changes (shutter closes or interlock is broken) the switch immediately opens (its default un-powered state) and the lasers power is interrupted.
 
 If "shutter" is closed there is a delay before you can turn the power to the lasers back on and the interlock and shutter have to be in the proper states or they will remain off.
 
@@ -23,7 +23,7 @@ Detailed information is printed to serial regarding the state of the system.
 The Arduino pins are as follows
 
 - ShutterSignal = The signal coming from the ILDA shutter signal. +5v = Shutter OPEN (this is an input pin for reading the shutter voltage)
-- ShutterPin = Pin used to control the relay state (Output pin for sending signal to the relay
+- ShutterPin = Pin used to control the switch state (Output pin for sending signal to the switch)
 - InterlockOut = set to +v5 to send a constant signal over the interlock loop (+5v output pin)
 - InterlockIn = Reads the signal from the interlock loop sent from the InterlockOut pin(input pin)
 
@@ -39,7 +39,7 @@ https://www.arduino.cc/en/Guide/HomePage
 
 A circuit should be configured so that the ILDA Shutter pin from the connector (pin 13 from the ILDA DB25) is connected to the shutterSignal pin of the arduino. The shutterPin pin should go to your relay signal pin. the ILDA ground pin (ILDA DB25 pin 25)should be connected to a common ground. 
 
-The relay and the Arduino both need 5v and can share the same power supply. Any loss of power to the arduino or relay should cause the shutter to close. The Arduino board should share a ground with the ILDA DB25 connector
+The he Arduino  needs 5v and can share the same power supply as a relay if needed. Any loss of power to the arduino or switch mechanism should cause the shutter to close. The Arduino board should also share a ground with the ILDA DB25 connector
 
 **The interlock circuit**
 
