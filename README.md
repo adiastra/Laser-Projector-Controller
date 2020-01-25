@@ -9,21 +9,23 @@ Onboard control for a laser projector
 
 **Purpose**
 
-This is code for an Arduino microcontroller designed to read the current state of the SHUTTER and INTERLOCK from a standard ILDA connector.
+This is code for an Arduino microcontroller and is designed to read the current state of the SHUTTER and INTERLOCK from a standard ILDA connector.
 
-The code does the following.
+**What does it do?**
 
-IF the SHUTTER signal is OPEN (+5v) AND the INTERLOCK is a COMPLETE CIRCUIT, only then will aa pin activate that can be used to control whatever shutter method you have chosen (relay on DC power, crobar circuit, grounding modulation) to deactivate your lasers. 
+IF the SHUTTER signal is OPEN (+5v) AND the INTERLOCK is a COMPLETE CIRCUIT, only then will aa pin activate that can be used to control whatever shutter method you have chosen (relay on DC power, crobar circuit, grounding modulation, physical shutter, etc) to deactivate your lasers. 
 
-If at any point either of these states changes (shutter closes or interlock is broken) the switch immediately opens (its default un-powered state) and the lasers power is interrupted.
+If at any point either of these states changes (shutter closes or interlock is broken) the switch immediately opens (its default un-powered state) and the lasers output is interrupted.
 
-If "shutter" is closed there is a delay before you can turn the power to the lasers back on and the interlock and shutter have to be in the proper states or they will remain off.
+If "shutter" is closed there is a delay before you can turn the power to the lasers back on and the interlock and shutter have to be in the proper states or they will remain shuttered.
 
-If the interlock fails, the :shutter: is closed and remains closed until the interlock issue has been reolved and a safety delay has expired.
+If the interlock fails, the "shutter" is "closed" and remains in that state until the interlock issue has been reolved and a safety delay has expired.
 
 Detailed information is printed to serial regarding the state of the system.
 
 *For safety the GALVO power should NEVER be interrupted*
+
+**Setup**
 
 The Arduino pins are as follows
 
