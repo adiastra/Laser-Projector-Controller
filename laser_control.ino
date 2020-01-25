@@ -1,5 +1,5 @@
 
-#define VERSION "Version 2.1"
+#define VERSION "Version 2.2"
 /*
  *This is the DiAstra Laser Controler
  *It is designed to control safety and sensors for a laser projector
@@ -33,6 +33,7 @@ bool laserMessage = false;
 bool shutterMessage = false;
 bool interlockMessage = false;
 bool shutterReady = false;
+bool interlockDelay = true;
 bool interlock = LOW; 
 bool shutter = LOW; 
 
@@ -78,7 +79,7 @@ void loop()
   checkPins();
 
   //are we in a delay caused by an interlock fault?
-  if (millis() >= delayTime + INTERLOCK_DELAY)
+  if (!interlockDelay)
   {
     // If the interlock is good and the shutter is set to open  
     while((shutter) && (interlock))
@@ -106,13 +107,13 @@ void loop()
     laserMessage = false;
     if (!shutterMessage)
     {      
-      if ((!shutterReady) && (interlock))
+      if ((!shutterReady) && (interlock) && (!interlockDelay))
       {//Safety delay on shutter close so we cant reopen to quickly accidently (SHUTTER_DELAY)
         Serial.println("Shutter Closed - Safety Delay");
         delay(SHUTTER_DELAY);
         shutterReady = true;
       }     
-      else if (interlock)
+      else if ((interlock) && (!interlockDelay))
       { //If the safety delay has happened already, and the interlock is good, the shutter is ready to open
         Serial.println("Shutter Closed - Laser Ready");
         shutterMessage = true;  
@@ -135,9 +136,23 @@ void loop()
     }    
   }
 
+  //Set the interlock delay bit
+  if (millis() < delayTime + INTERLOCK_DELAY)
+  {
+    interlockDelay = true;
+  }
+  else
+  {
+    interlockDelay = false;
+  }
+
   // this alows us to repeat messages to serial every MESSAGE_DELAY seconds
   if (millis() >= repeatMessage + MESSAGE_DELAY)
   {
+    if (!interlock)
+    {
+      shutterReady = false;
+    }
     shutterMessage = false;
     interlockMessage = false;
   }
