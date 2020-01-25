@@ -61,3 +61,5 @@ If your show controler closes the shutter during the show (for blank periods) yo
 If the SHUTTER_DELAY is low (under 2 seconds) you should NOT use the shutter to control DC power to the lasers as switching the DC power off and on to quickly could damage the lease driver you. Instead use an alternate method for controling the shutter (manual shutter, ground modulation signal). 
 
 MESSAGE_DELAY can be whatever you want as it only controls how often messages repeat in the serial readout. 
+
+**NOTE:** Due to the limitations of the Arduino, the system must be power cycled at minimum every 48 days. I have not come up with a situation where a projector would be active for longer that.
